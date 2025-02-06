@@ -1,16 +1,16 @@
-package com.mapp.projects.budgetmanager.models;
+package com.mapp.budgetmanager.models;
 
 public class Dashboard {
 
     private Long id;
-    private DepartmentTotals department;
+    private Department department;
     private String category;
     private String status;
     private String type;
     private float cost;
     private User user;
 
-    public Dashboard(Long id, DepartmentTotals department, String category, String status,
+    public Dashboard(Long id, Department department, String category, String status,
                      String type, float cost, User user) {
         this.id = id;
         this.department = department;
@@ -22,7 +22,7 @@ public class Dashboard {
     }
 
     public Long getId() { return id; }
-    public DepartmentTotals getDepartment() { return department; }
+    public Department getDepartment() { return department; }
     public String getCategory() { return category; }
     public String getStatus() { return status; }
     public String getType() { return type; }
@@ -30,7 +30,7 @@ public class Dashboard {
     public User getUser() { return user; }
 
     public void setId(Long id) { this.id = id; }
-    public void setDepartment(DepartmentTotals department) { this.department = department; }
+    public void setDepartment(Department department) { this.department = department; }
     public void setCategory(String category) { this.category = category; }
     public void setStatus(String status) { this.status = status; }
     public void setType(String type) { this.type = type; }

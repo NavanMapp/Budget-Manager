@@ -1,4 +1,4 @@
-package com.mapp.projects.budgetmanager.services;
+package com.mapp.budgetmanager.services;
 
 public class DashboardService {
 

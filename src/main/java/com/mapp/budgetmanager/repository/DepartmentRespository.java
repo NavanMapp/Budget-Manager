@@ -10,14 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface DepartmentRespository extends JpaRepository<Department, Long> {
-    @Override
-    Optional<Department> findById(Long aLong);
-    Department createDept (Department department);
-    List<Department> getAllDept();
-    List<Department> getTotalBudget(BigDecimal totalBudget);
-    List<Department> getStatus (String status);
-    List<Department> calculateRemaining (BigDecimal remainingAmount);
-    List<Department> calculateSpent(BigDecimal spentAmount);
-    Department updateDept(Department department);
-    Optional<Department> delete(Long id);
+
+    Optional<Department> findById(Long id);
+    List<Department> findByTotalBudget(BigDecimal totalBudget);
+    List<Department> findByStatus(String status);
+    List<Department> findByRemainingAmount(BigDecimal remainingAmount);
+    List<Department> findBySpentAmount(BigDecimal spentAmount);
 }

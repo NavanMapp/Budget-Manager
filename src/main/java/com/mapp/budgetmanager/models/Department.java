@@ -21,7 +21,7 @@ public class Department {
     @JoinColumn(name = "siteId")
     private Site site;
 
-    @OneToMany(mappedBy = "departmnt", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private User user;
 
     // Getters

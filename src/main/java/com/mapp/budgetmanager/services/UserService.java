@@ -22,15 +22,21 @@ public class UserService  {
     // Implement microsoft embedded login
 
     //method to find user by id/email
-    public Optional<User> findById(Long id) {
-        return userRepo.findById(id);
+    public User findById(Long id) {
+        return userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
     // method to get/view all Users
     public List<User> findAllUsers() {
         return userRepo.findAll();
     }
     // Method to Add user to DB
-    public User addUser(User user) {
+    public User addUser() {
+        User user = new User();
+        user.setName(user.getName());
+        user.setEmail(user.getEmail());
+        user.setPassword(user.getPassword());
+        user.setDepartment(user.getDepartment());
         return userRepo.save(user);
     }
 
@@ -41,9 +47,7 @@ public class UserService  {
                     userExist.setName(userExist.getName());
                     userExist.setEmail(userExist.getEmail());
                     userExist.setPassword(userExist.getPassword());
-                    userExist.setStatus(userExist.getStatus());
                     userExist.setDepartment(userExist.getDepartment());
-                    userExist.setType(userExist.getType());
                     return userRepo.save(userExist);
                 }).orElseThrow(() -> new RuntimeException("User not found"));
     }

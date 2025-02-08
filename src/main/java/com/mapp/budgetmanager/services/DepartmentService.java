@@ -21,18 +21,23 @@ public class DepartmentService {
     }
 
     // CREATE/ADD a department
-    public Department addDepartment(Department dept) {
+    public Department addDepartment() {
+        Department dept = new Department();
+        dept.setName(dept.getName());
+        dept.setTotalBudget(dept.getTotalBudget());
+        dept.setDate(dept.getDate());
         return deptRepo.save(dept);
     }
 
     // READ: View Full budgets per Site for all department
-    public List<Department> findAllSites(Department site) {
+    public List<Department> findAllDept(Department site) {
         return deptRepo.findAll();
     }
 
     // pass in 1 siteId, all departments.
-    public Optional<Department> findById(Long id) {
-        return deptRepo.findById(id);
+    public Department findDeptById(Long id) {
+        return deptRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Department does not exist"));
     }
 
     // UPDATE department & site
@@ -50,7 +55,7 @@ public class DepartmentService {
         if (deptRepo.existsById(id)) {
             deptRepo.deleteById(id);
         } else {
-            throw new RuntimeException("Department cannot be deleted: Id not found");
+            throw new RuntimeException("Department cannot be deleted: Not Found");
         }
     }
 

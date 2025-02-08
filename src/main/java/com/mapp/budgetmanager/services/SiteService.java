@@ -29,8 +29,9 @@ public class SiteService {
     }
 
     // Read/Get site by their id
-    public Optional<Site> findById(Long id) {
-        return siteRepo.findById(id);
+    public Site findById(Long id) {
+        return siteRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Site cannot be found"));
     }
 
     // Update a sites details

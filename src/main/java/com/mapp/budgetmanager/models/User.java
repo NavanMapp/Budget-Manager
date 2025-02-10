@@ -2,6 +2,8 @@ package com.mapp.budgetmanager.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class User {
     @Id
@@ -18,6 +20,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "siteId")
     private Site site;
+
+    @OneToMany(mappedBy = "user")
+    private List<Dashboard> dashboards;
 
     public Long getId() { return id; }
     public String getName() { return name; }

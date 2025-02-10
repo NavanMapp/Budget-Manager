@@ -26,6 +26,9 @@ public class Department {
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> user;
 
+    @OneToMany(mappedBy = "department")
+    private List<Dashboard> dashboards;
+
     // Getters
     public Long getId() { return id; }
     public String getName() { return name; }

@@ -1,22 +1,19 @@
 package com.mapp.budgetmanager.services;
 
+import com.mapp.budgetmanager.models.Department;
+import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.models.User;
 import com.mapp.budgetmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService  {
 
-    private final UserRepository userRepo;
-    
     @Autowired
-    public UserService (UserRepository userRepo) {
-        this.userRepo = userRepo;
-    }
+    private UserRepository userRepo;
 
     //method to get user from DB for Authentication
     // Implement microsoft embedded login
@@ -31,7 +28,7 @@ public class UserService  {
         return userRepo.findAll();
     }
     // Method to Add user to DB
-    public User addUser() {
+    public User addUser(String name, String email, Department department, Site site) {
         User user = new User();
         user.setName(user.getName());
         user.setEmail(user.getEmail());

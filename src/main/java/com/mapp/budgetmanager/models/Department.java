@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
+@Entity
 public class Department {
 
     @Id
@@ -22,7 +24,7 @@ public class Department {
     private Site site;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    private User user;
+    private List<User> user;
 
     // Getters
     public Long getId() { return id; }

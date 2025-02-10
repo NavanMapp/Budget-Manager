@@ -13,7 +13,6 @@ public class SiteService {
 
     private final SiteRepository siteRepo;
 
-    @Autowired
     public SiteService(SiteRepository siteRepo) {
         this.siteRepo = siteRepo;
     }

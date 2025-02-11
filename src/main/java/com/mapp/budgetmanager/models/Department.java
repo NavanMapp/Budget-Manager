@@ -20,13 +20,13 @@ public class Department {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "siteId")
+    @JoinColumn(name = "site_id")
     private Site site;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> user;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dashboard> dashboards;
 
     // Getters

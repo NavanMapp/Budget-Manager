@@ -1,9 +1,11 @@
 package com.mapp.budgetmanager.services;
 
+import com.mapp.budgetmanager.dto.UserDTO;
 import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.models.User;
 import com.mapp.budgetmanager.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,24 +29,27 @@ public class UserService  {
     public List<User> findAllUsers() {
         return userRepo.findAll();
     }
+
     // Method to Add user to DB
-    public User addUser(String name, String email, Department department, Site site) {
+    public User addUser(UserDTO dto) {
         User user = new User();
-        user.setName(user.getName());
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
-        user.setDepartment(user.getDepartment());
+        if (user == null) throw new IllegalArgumentException("User cannot be created ");
+
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setDepartment(dto.getDepartment());
+        user.setSite(dto.getSite());
+
         return userRepo.save(user);
     }
 
     //Method to update user email, profile etc
-    public User updateUser(Long id) {
+    public User updateUser(Long id, UserDTO dto) {
         return userRepo.findById(id).map(
                 userExist -> {
-                    userExist.setName(userExist.getName());
-                    userExist.setEmail(userExist.getEmail());
-                    userExist.setPassword(userExist.getPassword());
-                    userExist.setDepartment(userExist.getDepartment());
+                    userExist.setEmail(dto.getEmail());
+                    userExist.setPassword(dto.getPassword());
+                    userExist.setDepartment(dto.getDepartment());
                     return userRepo.save(userExist);
                 }).orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -53,8 +58,7 @@ public class UserService  {
     public void deleteUser(Long id) {
         if (userRepo.existsById(id)) {
             userRepo.deleteById(id);
-        } else {
-            throw new RuntimeException("User not found");
         }
+        throw new EntityNotFoundException("User not found "+ id);
     }
 }

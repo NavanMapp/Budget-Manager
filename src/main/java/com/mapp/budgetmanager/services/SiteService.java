@@ -1,24 +1,28 @@
 package com.mapp.budgetmanager.services;
 
+import com.mapp.budgetmanager.dto.SiteDTO;
 import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.repository.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SiteService {
 
     private final SiteRepository siteRepo;
 
+    @Autowired
     public SiteService(SiteRepository siteRepo) {
         this.siteRepo = siteRepo;
     }
 
     // Create/Add site
-    public Site addSite(Site site) {
+    public Site addSite(SiteDTO dto) {
+        Site site = new Site();
+        if (site == null ) throw new IllegalArgumentException("Site cannot be created");
+        site.setName(dto.getName());
         return siteRepo.save(site);
     }
 
@@ -34,10 +38,10 @@ public class SiteService {
     }
 
     // Update a sites details
-    public Site updateSite(Long id) {
+    public Site updateSite(Long id, SiteDTO dto) {
         return siteRepo.findById(id).map(
                 siteExists -> {
-                    siteExists.setName(siteExists.getName());
+                    siteExists.setName(dto.getName());
                     return siteRepo.save(siteExists);
                 }
         ).orElseThrow(() -> new RuntimeException("Site not found"));
@@ -47,9 +51,8 @@ public class SiteService {
     public void deleteSite(Long id) {
         if (siteRepo.existsById(id)) {
             siteRepo.deleteById(id);
-        } else {
-            throw new RuntimeException("Site Id cannot be found: ");
         }
+        throw new RuntimeException("Site Id cannot be found: ");
     }
 
 }

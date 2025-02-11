@@ -49,7 +49,10 @@ public class SiteController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deleteSite(@PathVariable Long id) {
-        service.deleteSite(id);
-        return ResponseEntity.ok("Site has been successfully deleted. ");
+        boolean deleted = service.deleteSite(id);
+        if (deleted)
+            return ResponseEntity.ok("Site has been successfully deleted. ");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body("Error encounted when trying to delete this site.");
     }
 }

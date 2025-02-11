@@ -48,11 +48,12 @@ public class SiteService {
     }
 
     // Delete a particular site
-    public void deleteSite(Long id) {
+    public boolean deleteSite(Long id) {
         if (siteRepo.existsById(id)) {
             siteRepo.deleteById(id);
+            return true;
         }
-        throw new RuntimeException("Site Id cannot be found: ");
+        return false;
     }
 
 }

@@ -1,11 +1,16 @@
 package com.mapp.budgetmanager.services;
 
+import com.mapp.budgetmanager.controllers.DepartmentController;
+import com.mapp.budgetmanager.dto.DepartmentDTO;
 import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.repository.DepartmentRespository;
+import jakarta.persistence.Entity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class DepartmentService {
     /**
      * This Service is to get all departmental budget amounts of a particular site.
@@ -16,21 +21,28 @@ public class DepartmentService {
 
     private final DepartmentRespository deptRepo;
 
+    @Autowired
     public DepartmentService(DepartmentRespository deptRepo) {
         this.deptRepo = deptRepo;
     }
 
     // CREATE/ADD a department
-    public Department addDepartment() {
+    public Department addDepartment(DepartmentDTO dto) {
         Department dept = new Department();
-        dept.setName(dept.getName());
-        dept.setTotalBudget(dept.getTotalBudget());
-        dept.setDate(dept.getDate());
+        if (dept == null) throw new IllegalArgumentException("Department cannot be created");
+        dept.setName(dto.getName());
+        dept.setTotalBudget(dto.getTotalBudget());
+        dept.setDate(dto.getDate());
+        dept.setSpentAmount(dto.getSpentAmount());
+        dept.setRemainingAmount(dto.getRemainingAmount());
+        dept.setStatus(dto.getStatus());
+        dept.setUser(dto.getUser());
+        dept.setDashboards(dto.getDashboard());
         return deptRepo.save(dept);
     }
 
     // READ: View Full budgets per Site for all department
-    public List<Department> findAllDept(Department site) {
+    public List<Department> findAllDept() {
         return deptRepo.findAll();
     }
 
@@ -41,21 +53,22 @@ public class DepartmentService {
     }
 
     // UPDATE department & site
-    public Department updateDept(Long id) {
+    public Department updateDept(Long id, DepartmentDTO dto) {
         return deptRepo.findById(id).map(
                 deptExists -> {
-                    deptExists.setName(deptExists.getName());
-                    deptExists.setTotalBudget(deptExists.getTotalBudget());
+                    deptExists.setName(dto.getName());
+                    deptExists.setTotalBudget(dto.getTotalBudget());
                     return deptRepo.save(deptExists);
                 }
         ).orElseThrow(() -> new RuntimeException("Update cannot be done"));
     }
     // DELETE department & site
-    public void deleteDept(Long id) {
+    public boolean deleteDept(Long id) {
         if (deptRepo.existsById(id)) {
             deptRepo.deleteById(id);
+            return true;
         } else {
-            throw new RuntimeException("Department cannot be deleted: Not Found");
+            return false;
         }
     }
 

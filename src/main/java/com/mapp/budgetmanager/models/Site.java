@@ -18,6 +18,8 @@ public class Site {
     @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users;
 
+    public Site() { this.id = id; }
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public List<Department> getDepartments() { return departments; }

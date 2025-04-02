@@ -15,7 +15,7 @@ function PieChart({ data }) {
         outerRadius={150}
         fill='#8884d8'
         dataKey='value'
-        label={({ name, percent }) => `R{name}: R{(percent * 100).toFixed(0)}%`}
+        label={({ name, percent }) => `${name}: R{(percent * 100).toFixed(0)}%`}
       >
         {data.map((entry, index) => (
           <Cell key={`cell-R{index}`} fill={COLORS[index % COLORS.length]} />

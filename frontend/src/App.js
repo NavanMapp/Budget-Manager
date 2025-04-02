@@ -7,14 +7,22 @@ import Budgets from './pages/Budgets';
 import Reports from './pages/Reports';
 import Categories from './pages/Categories';
 import Settings from './pages/Settings';
+import { useState } from 'react';
 
 function App() {
+
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   return (
     <BrowserRouter>
       <div className='app'>
-        <Navbar />
+        <Navbar 
+          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+        />
         <div className='main-content'>
-          <Sidebar />
+          <Sidebar 
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
           <div className='content'>
             <Routes>
               <Route path='/' element={<Dashboard />} />

@@ -1,5 +1,6 @@
 package com.mapp.budgetmanager.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,12 +14,16 @@ public class Site {
     private String name;
 
     @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Department> departments = new ArrayList<>();
+    
+    public Site(Long id, String name, List<Department> departments, List<User> users) {
+        this.id = id;
+        this.name = name;
+        this.departments = departments;
+    }
 
-    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<User> users;
-
-    public Site() { this.id = id; }
+    public Site() {}
 
     public Long getId() { return id; }
     public String getName() { return name; }

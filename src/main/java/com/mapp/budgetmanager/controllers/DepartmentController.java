@@ -5,6 +5,7 @@ import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,10 @@ public class DepartmentController {
         this.service = service;
     }
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create"
+            , consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = "application/json"
+    )
     public ResponseEntity<Department> addDepartment(@RequestBody DepartmentDTO dto){
         Department dept = service.addDepartment(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(dept);

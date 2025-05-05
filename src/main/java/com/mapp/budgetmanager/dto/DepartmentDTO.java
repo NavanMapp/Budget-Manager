@@ -5,8 +5,11 @@ import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.models.User;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 public class DepartmentDTO {
 
@@ -16,9 +19,9 @@ public class DepartmentDTO {
     private BigDecimal spentAmount;
     private BigDecimal remainingAmount;
     private LocalDate date;
-    private List<User> user;
-    private Site site;
-    private List<Dashboard> dashboard;
+//    private List<User> user;
+    private Long siteId;
+//    private List<Dashboard> dashboard;
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -36,14 +39,18 @@ public class DepartmentDTO {
     public void setRemainingAmount(BigDecimal remainingAmount) { this.remainingAmount = remainingAmount; }
 
     public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public void setDate(Date date) {
+        date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = formatter.format(date);
+    }
 
-    public List<User> getUser() { return user; }
-    public void setUser(List<User> user) { this.user = user; }
-
-    public Site getSite() { return site; }
-    public void setSite(Site site) { this.site = site; }
-
-    public List<Dashboard> getDashboard() { return dashboard; }
-    public void setDashboard(List<Dashboard> dashboard) { this.dashboard = dashboard; }
+//    public List<User> getUser() { return user; }
+//    public void setUser(List<User> user) { this.user = user; }
+//
+    public Long getSiteId() { return siteId; }
+    public void setSiteId(Long siteId) { this.siteId = siteId; }
+//
+//    public List<Dashboard> getDashboard() { return dashboard; }
+//    public void setDashboard(List<Dashboard> dashboard) { this.dashboard = dashboard; }
 }

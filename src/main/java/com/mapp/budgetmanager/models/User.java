@@ -1,5 +1,7 @@
 package com.mapp.budgetmanager.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,13 +16,16 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @JsonBackReference
     private Department department;
 
     @ManyToOne
     @JoinColumn(name = "site_id")
+    @JsonBackReference
     private Site site;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Dashboard> dashboards;
 
     public Long getId() { return id; }

@@ -3,7 +3,9 @@ package com.mapp.budgetmanager.services;
 import com.mapp.budgetmanager.controllers.DepartmentController;
 import com.mapp.budgetmanager.dto.DepartmentDTO;
 import com.mapp.budgetmanager.models.Department;
+import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.repository.DepartmentRespository;
+import com.mapp.budgetmanager.repository.SiteRepository;
 import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,12 @@ public class DepartmentService {
      *                  3. potential expenditures*/
 
     private final DepartmentRespository deptRepo;
+    private final SiteRepository siteRepo;
 
     @Autowired
-    public DepartmentService(DepartmentRespository deptRepo) {
+    public DepartmentService(DepartmentRespository deptRepo, SiteRepository siteRepo) {
         this.deptRepo = deptRepo;
+        this.siteRepo = siteRepo;
     }
 
     // CREATE/ADD a department
@@ -36,8 +40,11 @@ public class DepartmentService {
         dept.setSpentAmount(dto.getSpentAmount());
         dept.setRemainingAmount(dto.getRemainingAmount());
         dept.setStatus(dto.getStatus());
-        dept.setUser(dto.getUser());
-        dept.setDashboards(dto.getDashboard());
+//        dept.setUser(dto.getUser());
+//        dept.setDashboards(dto.getDashboard());
+        Site site = siteRepo.findById(dto.getSiteId()).orElseThrow(
+                () -> new RuntimeException("Site Not Found"));
+        dept.setSite(site);
         return deptRepo.save(dept);
     }
 
@@ -57,7 +64,10 @@ public class DepartmentService {
         return deptRepo.findById(id).map(
                 deptExists -> {
                     deptExists.setName(dto.getName());
+                    deptExists.setStatus(dto.getStatus());
                     deptExists.setTotalBudget(dto.getTotalBudget());
+                    deptExists.setSpentAmount(dto.getSpentAmount());
+                    deptExists.setRemainingAmount(dto.getRemainingAmount());
                     return deptRepo.save(deptExists);
                 }
         ).orElseThrow(() -> new RuntimeException("Update cannot be done"));

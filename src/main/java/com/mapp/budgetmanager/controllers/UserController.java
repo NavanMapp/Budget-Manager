@@ -17,12 +17,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserDTO userDTO;
 
     @Autowired
-    public UserController(UserService userService, UserDTO userDTO) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userDTO = userDTO;
     }
 
     // Create a user from interface input
@@ -30,8 +28,8 @@ public class UserController {
             , consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = "application/json"
     )
-    public ResponseEntity<User> addUser(@RequestBody UserDTO userDto) {
-        User create = userService.addUser(userDTO);
+    public ResponseEntity<User> addUser(@RequestBody UserDTO dto) {
+        User create = userService.addUser(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(create);
     }
 
@@ -45,7 +43,7 @@ public class UserController {
     // Read/find user by Id
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
-        User user = userService.findById(id);
+        User user = userService.findUserById(id);
 
         if (user != null) {
             return ResponseEntity.ok(user);

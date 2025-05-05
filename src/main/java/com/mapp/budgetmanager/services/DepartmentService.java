@@ -7,6 +7,7 @@ import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.repository.DepartmentRespository;
 import com.mapp.budgetmanager.repository.SiteRepository;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class DepartmentService {
         dept.setUser(dto.getUser());
 //        dept.setDashboards(dto.getDashboard());
         Site site = siteRepo.findById(dto.getSiteId())
-                .orElseThrow(() -> new RuntimeException("Site Not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
         dept.setSite(site);
         return deptRepo.save(dept);
     }
@@ -56,7 +57,7 @@ public class DepartmentService {
     // pass in 1 siteId, all departments.
     public Department findDeptById(Long id) {
         return deptRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Department does not exist"));
     }
 
     // UPDATE department & site
@@ -70,16 +71,15 @@ public class DepartmentService {
                     deptExists.setRemainingAmount(dto.getRemainingAmount());
                     return deptRepo.save(deptExists);
                 }
-        ).orElseThrow(() -> new RuntimeException("Update cannot be done"));
+        ).orElseThrow(() -> new IllegalArgumentException("Update cannot be done"));
     }
     // DELETE department & site
     public boolean deleteDept(Long id) {
         if (deptRepo.existsById(id)) {
             deptRepo.deleteById(id);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
 

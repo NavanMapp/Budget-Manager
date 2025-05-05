@@ -40,10 +40,10 @@ public class DepartmentService {
         dept.setSpentAmount(dto.getSpentAmount());
         dept.setRemainingAmount(dto.getRemainingAmount());
         dept.setStatus(dto.getStatus());
-//        dept.setUser(dto.getUser());
+        dept.setUser(dto.getUser());
 //        dept.setDashboards(dto.getDashboard());
-        Site site = siteRepo.findById(dto.getSiteId()).orElseThrow(
-                () -> new RuntimeException("Site Not Found"));
+        Site site = siteRepo.findById(dto.getSiteId())
+                .orElseThrow(() -> new RuntimeException("Site Not Found"));
         dept.setSite(site);
         return deptRepo.save(dept);
     }

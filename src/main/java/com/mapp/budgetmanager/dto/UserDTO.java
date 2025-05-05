@@ -9,8 +9,8 @@ public class UserDTO {
 
     private String email;
     private String password;
-    private Department department;
-    private Site site;
+    private Long departmentId;
+    private Long siteId;
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -18,10 +18,10 @@ public class UserDTO {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public Department getDepartment() { return department; }
-    public void setDepartment(Department department) { this.department = department; }
+    public Long getDepartment() { return departmentId; }
+    public void setDepartment(Long department) { this.departmentId = department; }
 
-    public Site getSite() { return site; }
-    public void setSite(Site site) { this.site = site;}
+    public Long getSiteId() { return siteId; }
+    public void setSiteId(Long site) { this.siteId = siteId;}
 
 }

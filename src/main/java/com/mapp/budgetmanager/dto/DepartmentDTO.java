@@ -19,8 +19,8 @@ public class DepartmentDTO {
     private BigDecimal spentAmount;
     private BigDecimal remainingAmount;
     private LocalDate date;
-//    private List<User> user;
-    private Long siteId;
+    private List<User> user;
+    private Long siteId ;
 //    private List<Dashboard> dashboard;
 
     public String getName() { return name; }
@@ -45,8 +45,8 @@ public class DepartmentDTO {
         String formattedDate = formatter.format(date);
     }
 
-//    public List<User> getUser() { return user; }
-//    public void setUser(List<User> user) { this.user = user; }
+    public List<User> getUser() { return user; }
+    public void setUser(List<User> user) { this.user = user; }
 //
     public Long getSiteId() { return siteId; }
     public void setSiteId(Long siteId) { this.siteId = siteId; }

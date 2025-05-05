@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,9 +27,9 @@ public class Department {
     @JsonBackReference
     private Site site;
 
-//    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<User> user;
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<User> user = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonManagedReference
@@ -47,7 +48,7 @@ public class Department {
         this.remainingAmount = remainingAmount;
         this.date = date;
         this.site = site;
-//        this.user = user;
+        this.user = user;
 //        this.dashboards = dashboards;
     }
 
@@ -62,7 +63,7 @@ public class Department {
     public BigDecimal getSpentAmount() { return spentAmount; }
     public BigDecimal getRemainingAmount() { return remainingAmount; }
     public LocalDate getDate() { return date; }
-//    public List<User> getUser() { return user; }
+    public List<User> getUser() { return user; }
 //    public List<Dashboard> getDashboards() { return dashboards; }
 
     // Setters
@@ -74,6 +75,6 @@ public class Department {
     public void setSpentAmount(BigDecimal spentAmount) { this.spentAmount = spentAmount; }
     public void setRemainingAmount(BigDecimal remainingAmount) { this.remainingAmount = remainingAmount; }
     public void setDate (LocalDate date) { this.date = date; }
-//    public void setUser(List<User> user) { this.user = user; }
+    public void setUser(List<User> user) { this.user = user; }
 //    public void setDashboards(List<Dashboard> dashboards) { this.dashboards = dashboards; }
 }

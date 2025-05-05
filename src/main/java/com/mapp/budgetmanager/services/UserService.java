@@ -4,6 +4,8 @@ import com.mapp.budgetmanager.dto.UserDTO;
 import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.models.User;
+import com.mapp.budgetmanager.repository.DepartmentRespository;
+import com.mapp.budgetmanager.repository.SiteRepository;
 import com.mapp.budgetmanager.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,18 @@ import java.util.List;
 @Service
 public class UserService  {
 
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
+    private final SiteRepository siteRepo;
+    private final DepartmentRespository deptRepo;
 
-    //method to get user from DB for Authentication
+    @Autowired
+    public UserService(UserRepository userRepo, SiteRepository siteRepo, DepartmentRespository deptRepo) {
+        this.userRepo = userRepo;
+        this.siteRepo = siteRepo;
+        this.deptRepo = deptRepo;
+    }
+
+//method to get user from DB for Authentication
     // Implement microsoft embedded login
 
     //method to find user by id/email
@@ -34,12 +44,14 @@ public class UserService  {
     public User addUser(UserDTO dto) {
         User user = new User();
         if (user == null) throw new IllegalArgumentException("User cannot be created ");
-
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-        user.setDepartment(dto.getDepartment());
-        user.setSite(dto.getSite());
-
+        Site site = siteRepo.findById(dto.getSiteId())
+                .orElseThrow(() -> new RuntimeException("The site you are allocating does not exist, try again"));
+        user.setSite(site);
+        Department dept = deptRepo.findById(dto.getDepartment())
+                .orElseThrow(() -> new RuntimeException("The department you are allocating cannot be found!"));
+        user.setDepartment(dept);
         return userRepo.save(user);
     }
 
@@ -49,9 +61,15 @@ public class UserService  {
                 userExist -> {
                     userExist.setEmail(dto.getEmail());
                     userExist.setPassword(dto.getPassword());
-                    userExist.setDepartment(dto.getDepartment());
+                    Site site = siteRepo.findById(dto.getSiteId())
+                            .orElseThrow(() -> new RuntimeException("Site allocation for this user cannot be updated"));
+                    userExist.setSite(site);
+                    Department dept = deptRepo.findById(dto.getDepartment())
+                                    .orElseThrow(() -> new
+                                            RuntimeException("Department allocation for this user cannot be updated"));
+                    userExist.setDepartment(dept);
                     return userRepo.save(userExist);
-                }).orElseThrow(() -> new RuntimeException("User not found"));
+                }).orElseThrow(() -> new RuntimeException("User does not exist, try again"));
     }
 
     //Method to Delete user record
@@ -59,6 +77,6 @@ public class UserService  {
         if (userRepo.existsById(id)) {
             userRepo.deleteById(id);
         }
-        throw new EntityNotFoundException("User not found "+ id);
+        throw new EntityNotFoundException("User does not exist, try again "+ id);
     }
 }

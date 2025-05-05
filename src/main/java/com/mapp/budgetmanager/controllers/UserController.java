@@ -5,6 +5,7 @@ import com.mapp.budgetmanager.models.User;
 import com.mapp.budgetmanager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,10 @@ public class UserController {
     }
 
     // Create a user from interface input
-    @PostMapping("/register")
+    @PostMapping(value = "/register"
+            , consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = "application/json"
+    )
     public ResponseEntity<User> addUser(@RequestBody UserDTO userDto) {
         User create = userService.addUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(create);

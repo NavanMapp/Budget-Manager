@@ -1,16 +1,15 @@
 package com.mapp.budgetmanager.services;
 
-import com.mapp.budgetmanager.controllers.DepartmentController;
 import com.mapp.budgetmanager.dto.DepartmentDTO;
 import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.repository.DepartmentRespository;
 import com.mapp.budgetmanager.repository.SiteRepository;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,7 +36,7 @@ public class DepartmentService {
         if (dept == null) throw new IllegalArgumentException("Department cannot be created");
         dept.setName(dto.getName());
         dept.setTotalBudget(dto.getTotalBudget());
-        dept.setDate(dto.getDate());
+        dept.setDate(new Date());
         dept.setSpentAmount(dto.getSpentAmount());
         dept.setRemainingAmount(dto.getRemainingAmount());
         dept.setStatus(dto.getStatus());

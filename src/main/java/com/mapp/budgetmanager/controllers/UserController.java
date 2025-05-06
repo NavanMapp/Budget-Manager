@@ -54,14 +54,20 @@ public class UserController {
     // Update a user from the interface input
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        userService.updateUser(id, userDTO);
-        return ResponseEntity.ok("User details updated successfully");
+        User updated = userService.updateUser(id, userDTO);
+        if (updated != null) return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body("User details updated successfully");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body("Error encountered upon updating user details");
     }
 
     // Delete user from interface request
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        boolean deleted = userService.deleteUser(id);
+        if (deleted) return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body("User deleted successfully");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body("Error encountered when deleting user");
     }
 }

@@ -3,6 +3,7 @@ package com.mapp.budgetmanager.controllers;
 import com.mapp.budgetmanager.dto.DashboardDTO;
 import com.mapp.budgetmanager.models.Dashboard;
 import com.mapp.budgetmanager.services.DashboardService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,8 +48,11 @@ public class DashboardController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateEntry(@PathVariable Long id, @RequestBody DashboardDTO dto) {
-        dashService.updateDashboardEntry(id, dto);
-        return ResponseEntity.ok("Entry updated successfully");
+        Dashboard entry = dashService.updateDashboardEntry(id, dto);
+        if (entry != null) return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body("Entry updated successfully");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                .body("Error encoutered when updating entry");
     }
 
     @DeleteMapping("delete/{id}")

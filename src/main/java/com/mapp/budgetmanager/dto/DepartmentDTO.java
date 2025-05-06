@@ -18,7 +18,6 @@ public class DepartmentDTO {
     private BigDecimal totalBudget;
     private BigDecimal spentAmount;
     private BigDecimal remainingAmount;
-    private LocalDate date;
     private List<User> user;
     private Long siteId ;
     private List<Dashboard> dashboard;
@@ -37,13 +36,6 @@ public class DepartmentDTO {
 
     public BigDecimal getRemainingAmount() { return remainingAmount; }
     public void setRemainingAmount(BigDecimal remainingAmount) { this.remainingAmount = remainingAmount; }
-
-    public LocalDate getDate() { return date; }
-    public void setDate(Date date) {
-        date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = formatter.format(date);
-    }
 
     public List<User> getUser() { return user; }
     public void setUser(List<User> user) { this.user = user; }

@@ -21,7 +21,7 @@ public class DepartmentDTO {
     private LocalDate date;
     private List<User> user;
     private Long siteId ;
-//    private List<Dashboard> dashboard;
+    private List<Dashboard> dashboard;
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -51,6 +51,6 @@ public class DepartmentDTO {
     public Long getSiteId() { return siteId; }
     public void setSiteId(Long siteId) { this.siteId = siteId; }
 //
-//    public List<Dashboard> getDashboard() { return dashboard; }
-//    public void setDashboard(List<Dashboard> dashboard) { this.dashboard = dashboard; }
+    public List<Dashboard> getDashboard() { return dashboard; }
+    public void setDashboard(List<Dashboard> dashboard) { this.dashboard = dashboard; }
 }

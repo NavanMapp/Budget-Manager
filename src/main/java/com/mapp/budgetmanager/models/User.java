@@ -16,12 +16,12 @@ public class User {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id", nullable = false)
     @JsonBackReference
     private Department department;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "site_id")
+    @JoinColumn(name = "site_id", nullable = false)
     @JsonBackReference
     private Site site;
 
@@ -29,7 +29,8 @@ public class User {
     @JsonManagedReference
     private List<Dashboard> dashboards;
 
-    public User(Long id, String username, String email, String password, Department department, Site site, List<Dashboard> dashboards) {
+    public User(Long id, String username, String email, String password, Department department,
+                Site site, List<Dashboard> dashboards) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -39,8 +40,7 @@ public class User {
         this.dashboards = dashboards;
     }
 
-    public User() {
-    }
+    public User() {}
 
     public Long getId() { return id; }
     public String getUsername() { return username; }

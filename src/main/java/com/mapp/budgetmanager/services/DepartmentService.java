@@ -42,7 +42,7 @@ public class DepartmentService {
         dept.setRemainingAmount(dto.getRemainingAmount());
         dept.setStatus(dto.getStatus());
         dept.setUser(dto.getUser());
-//        dept.setDashboards(dto.getDashboard());
+        dept.setDashboards(dto.getDashboard());
         Site site = siteRepo.findById(dto.getSiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
         dept.setSite(site);

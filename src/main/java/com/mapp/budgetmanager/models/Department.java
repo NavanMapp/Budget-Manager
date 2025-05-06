@@ -31,9 +31,9 @@ public class Department {
     @JsonManagedReference
     private List<User> user = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<Dashboard> dashboards;
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Dashboard> dashboards;
 
     public Department(Long id, String name, String status, BigDecimal totalBudget,
                       BigDecimal spentAmount, BigDecimal remainingAmount,
@@ -49,7 +49,7 @@ public class Department {
         this.date = date;
         this.site = site;
         this.user = user;
-//        this.dashboards = dashboards;
+        this.dashboards = dashboards;
     }
 
     public Department() {}
@@ -64,7 +64,7 @@ public class Department {
     public BigDecimal getRemainingAmount() { return remainingAmount; }
     public LocalDate getDate() { return date; }
     public List<User> getUser() { return user; }
-//    public List<Dashboard> getDashboards() { return dashboards; }
+    public List<Dashboard> getDashboards() { return dashboards; }
 
     // Setters
     public void setId(Long id) { this.id = id; }
@@ -76,5 +76,5 @@ public class Department {
     public void setRemainingAmount(BigDecimal remainingAmount) { this.remainingAmount = remainingAmount; }
     public void setDate (LocalDate date) { this.date = date; }
     public void setUser(List<User> user) { this.user = user; }
-//    public void setDashboards(List<Dashboard> dashboards) { this.dashboards = dashboards; }
+    public void setDashboards(List<Dashboard> dashboards) { this.dashboards = dashboards; }
 }

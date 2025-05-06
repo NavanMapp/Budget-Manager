@@ -68,6 +68,9 @@ public class DepartmentService {
                     deptExists.setTotalBudget(dto.getTotalBudget());
                     deptExists.setSpentAmount(dto.getSpentAmount());
                     deptExists.setRemainingAmount(dto.getRemainingAmount());
+                    Site site = siteRepo.findById(dto.getSiteId())
+                            .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
+                    deptExists.setSite(site);
                     return deptRepo.save(deptExists);
                 }
         ).orElseThrow(() -> new IllegalArgumentException("Update cannot be done"));

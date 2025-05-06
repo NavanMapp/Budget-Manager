@@ -46,10 +46,13 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.FOUND).body(dept);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping(value = "/update/{id}"
+            , consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = "application/json")
     public ResponseEntity<Department> updateDepartment(@PathVariable Long id,@RequestBody DepartmentDTO dto) {
         Department update = service.updateDept(id, dto);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(update);
+        if (update != null ) return ResponseEntity.status(HttpStatus.ACCEPTED).body(update);
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 
     @DeleteMapping("/delete/{id}")

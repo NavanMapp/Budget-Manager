@@ -40,8 +40,6 @@ public class DepartmentService {
         dept.setSpentAmount(dto.getSpentAmount());
         dept.setRemainingAmount(dto.getRemainingAmount());
         dept.setStatus(dto.getStatus());
-        dept.setUser(dto.getUser());
-        dept.setDashboards(dto.getDashboard());
         Site site = siteRepo.findById(dto.getSiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
         dept.setSite(site);
@@ -49,9 +47,7 @@ public class DepartmentService {
     }
 
     // READ: View Full budgets per Site for all department
-    public List<Department> findAllDept() {
-        return deptRepo.findAll();
-    }
+    public List<Department> findAllDept() { return deptRepo.findAll(); }
 
     // pass in 1 siteId, all departments.
     public Department findDeptById(Long id) {

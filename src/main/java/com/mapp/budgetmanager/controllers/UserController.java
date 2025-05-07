@@ -44,21 +44,16 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
         User user = userService.findUserById(id);
-
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        }
+        if (user != null)  return ResponseEntity.ok(user);
         return ResponseEntity.notFound().build();
     }
 
     // Update a user from the interface input
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        User updated = userService.updateUser(id, userDTO);
-        if (updated != null) return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body("User details updated successfully");
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                .body("Error encountered upon updating user details");
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        User update = userService.updateUser(id, userDTO);
+        if (update != null) return ResponseEntity.status(HttpStatus.ACCEPTED).body(update);
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 
     // Delete user from interface request

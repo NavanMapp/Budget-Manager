@@ -64,7 +64,7 @@ public class UserService  {
                     userExist.setUsername((dto.getUsername()));
                     userExist.setEmail(dto.getEmail());
                     userExist.setPassword(dto.getPassword());
-                    Site site = siteRepo.findById(id)
+                    Site site = siteRepo.findById(dto.getSiteId())
                             .orElseThrow(() -> new RuntimeException("Site allocation for this user cannot be updated"));
                     userExist.setSite(site);
                     Department dept = deptRepo.findById(dto.getDepartmentId())

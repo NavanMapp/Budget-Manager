@@ -23,7 +23,7 @@ public class Department {
     private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "site_id")
+    @JoinColumn(name = "site_id", nullable = false)
     @JsonBackReference
     private Site site;
 

@@ -29,7 +29,6 @@ public class DepartmentService {
         this.deptRepo = deptRepo;
         this.siteRepo = siteRepo;
     }
-
     // CREATE/ADD a department
     public Department addDepartment(DepartmentDTO dto) {
         Department dept = new Department();
@@ -45,16 +44,13 @@ public class DepartmentService {
         dept.setSite(site);
         return deptRepo.save(dept);
     }
-
     // READ: View Full budgets per Site for all department
     public List<Department> findAllDept() { return deptRepo.findAll(); }
-
     // pass in 1 siteId, all departments.
     public Department findDeptById(Long id) {
         return deptRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Department does not exist"));
     }
-
     // UPDATE department & site
     public Department updateDept(Long id, DepartmentDTO dto) {
         return deptRepo.findById(id).map(
@@ -79,8 +75,6 @@ public class DepartmentService {
         }
         return false;
     }
-
-
     // READ: View Full budget per Site for individual department
     // pass in 1 siteId & 1 departmentId.
 

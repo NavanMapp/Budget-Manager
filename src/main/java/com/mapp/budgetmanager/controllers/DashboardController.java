@@ -62,4 +62,14 @@ public class DashboardController {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .body("Error encounted trying to delete entry");
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Dashboard>> getFilteredEntry(@RequestParam(required = false) Long deptId,
+                                                            @RequestParam(required = false) Long userId,
+                                                            @RequestParam(required = false) String category,
+                                                            @RequestParam(required = false) String status,
+                                                            @RequestParam(required = false) String type) {
+        List<Dashboard> entry = dashService.getFilteredEntry(deptId, userId, category, status, type);
+        return ResponseEntity.ok(entry);
+    }
 }

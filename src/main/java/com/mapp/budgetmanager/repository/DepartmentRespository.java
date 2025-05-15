@@ -12,8 +12,9 @@ import java.util.Optional;
 public interface DepartmentRespository extends JpaRepository<Department, Long> {
 
     Optional<Department> findById(Long id);
-    List<Department> findByTotalBudget(BigDecimal totalBudget);
-    List<Department> findByStatus(String status);
-    List<Department> findByRemainingAmount(BigDecimal remainingAmount);
-    List<Department> findBySpentAmount(BigDecimal spentAmount);
+    /**
+     * TotalBudget(Entered by finance account holder)
+     * Calculate RemainingAmount = TotalBudget - Cost of Item from Dashboard
+     *
+     * */
 }

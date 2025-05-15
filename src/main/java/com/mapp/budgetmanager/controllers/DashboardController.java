@@ -69,7 +69,7 @@ public class DashboardController {
                                                             @RequestParam(required = false) String category,
                                                             @RequestParam(required = false) String status,
                                                             @RequestParam(required = false) String type) {
-        List<Dashboard> entry = dashService.getFilteredEntry(deptId, userId, category, status, type);
+        List<Dashboard> entry = dashService.filterEntry(deptId, userId, category, status, type);
         return ResponseEntity.ok(entry);
     }
 }

@@ -1,14 +1,17 @@
 package com.mapp.budgetmanager.services;
 
+import com.mapp.budgetmanager.dto.BudgetSummaryDTO;
 import com.mapp.budgetmanager.dto.DepartmentDTO;
 import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.models.Site;
+import com.mapp.budgetmanager.repository.DashboardRepository;
 import com.mapp.budgetmanager.repository.DepartmentRespository;
 import com.mapp.budgetmanager.repository.SiteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -23,11 +26,13 @@ public class DepartmentService {
 
     private final DepartmentRespository deptRepo;
     private final SiteRepository siteRepo;
+    private final DashboardRepository dashRepo;
 
     @Autowired
-    public DepartmentService(DepartmentRespository deptRepo, SiteRepository siteRepo) {
+    public DepartmentService(DepartmentRespository deptRepo, SiteRepository siteRepo, DashboardRepository dashRepo) {
         this.deptRepo = deptRepo;
         this.siteRepo = siteRepo;
+        this.dashRepo = dashRepo;
     }
     // CREATE/ADD a department
     public Department addDepartment(DepartmentDTO dto) {
@@ -36,8 +41,6 @@ public class DepartmentService {
         dept.setName(dto.getName());
         dept.setTotalBudget(dto.getTotalBudget());
         dept.setDate(new Date());
-        dept.setSpentAmount(dto.getSpentAmount());
-        dept.setRemainingAmount(dto.getRemainingAmount());
         dept.setStatus(dto.getStatus());
         Site site = siteRepo.findById(dto.getSiteId())
                 .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
@@ -58,8 +61,6 @@ public class DepartmentService {
                     deptExists.setName(dto.getName());
                     deptExists.setStatus(dto.getStatus());
                     deptExists.setTotalBudget(dto.getTotalBudget());
-                    deptExists.setSpentAmount(dto.getSpentAmount());
-                    deptExists.setRemainingAmount(dto.getRemainingAmount());
                     Site site = siteRepo.findById(dto.getSiteId())
                             .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
                     deptExists.setSite(site);
@@ -76,6 +77,12 @@ public class DepartmentService {
         return false;
     }
     // READ: View Full budget per Site for individual department
+    public BudgetSummaryDTO getBudgetSummary(Long departmentId, BigDecimal totalBudget) {
+        BigDecimal spent = dashRepo.getApprovedSpentAmount(departmentId);
+        BigDecimal remaining = totalBudget.subtract(spent);
+
+        return new BudgetSummaryDTO(spent, remaining);
+    }
     // pass in 1 siteId & 1 departmentId.
 
 }

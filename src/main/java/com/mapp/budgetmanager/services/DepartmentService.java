@@ -1,7 +1,7 @@
 package com.mapp.budgetmanager.services;
 
-import com.mapp.budgetmanager.dto.BudgetSummaryDTO;
 import com.mapp.budgetmanager.dto.DepartmentDTO;
+import com.mapp.budgetmanager.models.Dashboard;
 import com.mapp.budgetmanager.models.Department;
 import com.mapp.budgetmanager.models.Site;
 import com.mapp.budgetmanager.repository.DashboardRepository;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DepartmentService {
@@ -77,11 +78,20 @@ public class DepartmentService {
         return false;
     }
     // READ: View Full budget per Site for individual department
-    public BudgetSummaryDTO getBudgetSummary(Long departmentId, BigDecimal totalBudget) {
-        BigDecimal spent = dashRepo.getApprovedSpentAmount(departmentId);
-        BigDecimal remaining = totalBudget.subtract(spent);
-
-        return new BudgetSummaryDTO(spent, remaining);
+    public Department remainingCalculator(Long id, DepartmentDTO dto) {
+        Optional<Dashboard> approvedEntries = dashRepo.findByDeptAndStatus(id, "Approved");
+        BigDecimal spent = approvedEntries
+                .stream()
+                .map(Dashboard::getCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal remaining = dto.getTotalBudget().subtract(spent);
+        return deptRepo.findById(id).map(
+                deptExists -> {
+                    deptExists.setRemainingAmount(remaining);
+                    deptExists.setSpentAmount(spent);
+                    return deptRepo.save(deptExists);
+                }
+        ).orElseThrow(() -> new IllegalArgumentException("Cannot calculate remaining amount!"));
     }
     // pass in 1 siteId & 1 departmentId.
 

@@ -51,7 +51,7 @@ public class DepartmentController {
         Department update = service.updateDept(id, dto);
         if (update != null) return ResponseEntity.status(HttpStatus.ACCEPTED).body(update);
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-    }
+     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteDepartment (@PathVariable Long id) {
@@ -61,10 +61,6 @@ public class DepartmentController {
                 .body("Error encounted when trying to delete this department.");
     }
 
-    @PostMapping("/{id}/recalculate")
-    public ResponseEntity<DepartmentDTO> recalculateBudget(@PathVariable Long id) {
-        Department dept = service.remainingCalculator(id, new DepartmentDTO());
-        return ResponseEntity.ok(service.convertToDTO(dept));
-    }
+
 
 }

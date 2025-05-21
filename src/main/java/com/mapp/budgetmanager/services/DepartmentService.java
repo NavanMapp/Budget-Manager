@@ -68,6 +68,11 @@ public class DepartmentService {
     }
     // UPDATE department & site
     public Department updateDept(Long id, DepartmentDTO dto) {
+        List<Dashboard> approvedEntries = dashRepo.findByDepartment_IdAndStatus(id, "Approved");
+        BigDecimal spent = approvedEntries
+                .stream()
+                .map(Dashboard::getCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         return deptRepo.findById(id).map(
                 deptExists -> {
                     deptExists.setName(dto.getName());
@@ -76,6 +81,10 @@ public class DepartmentService {
                     Site site = siteRepo.findById(dto.getSiteId())
                             .orElseThrow(() -> new EntityNotFoundException("Site Not Found"));
                     deptExists.setSite(site);
+                    BigDecimal total = deptExists.getTotalBudget();
+                    BigDecimal remaining = total.subtract(spent);
+                    deptExists.setSpentAmount(spent);
+                    deptExists.setRemainingAmount(remaining);
                     return deptRepo.save(deptExists);
                 }
         ).orElseThrow(() -> new IllegalArgumentException("Update cannot be done"));
@@ -89,23 +98,7 @@ public class DepartmentService {
         return false;
     }
     // READ: View Full budget per Site for individual department
-    public Department remainingCalculator(Long id, DepartmentDTO dto) {
-        List<Dashboard> approvedEntries = dashRepo.findByDepartment_IdAndStatus(id, "Approved");
-        BigDecimal spent = approvedEntries
-                .stream()
-                .map(Dashboard::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return deptRepo.findById(id).map(
-                deptExists -> {
-                    BigDecimal total = deptExists.getTotalBudget();
-                    BigDecimal remaining = total.subtract(spent);
-                    deptExists.setSpentAmount(spent);
-                    deptExists.setRemainingAmount(remaining);
-                    return deptRepo.save(deptExists);
-                }
-        ).orElseThrow(() -> new IllegalArgumentException("Cannot calculate remaining amount!"));
-    }
     // pass in 1 siteId & 1 departmentId.
 
 }

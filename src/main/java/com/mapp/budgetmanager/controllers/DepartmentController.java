@@ -51,7 +51,7 @@ public class DepartmentController {
         Department update = service.updateDept(id, dto);
         if (update != null) return ResponseEntity.status(HttpStatus.ACCEPTED).body(update);
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-     }
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteDepartment (@PathVariable Long id) {

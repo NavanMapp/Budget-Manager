@@ -1,5 +1,7 @@
 package com.mapp.budgetmanager.dto;
 
+import com.mapp.budgetmanager.models.Department;
+
 import java.math.BigDecimal;
 
 public class DepartmentDTO {

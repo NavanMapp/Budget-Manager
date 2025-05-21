@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DepartmentService {
@@ -35,6 +34,18 @@ public class DepartmentService {
         this.siteRepo = siteRepo;
         this.dashRepo = dashRepo;
     }
+
+    public DepartmentDTO convertToDTO(Department dept) {
+        DepartmentDTO dto = new DepartmentDTO();
+        dto.setSiteId(dept.getId());
+        dto.setName(dept.getName());
+        dto.setTotalBudget(dept.getTotalBudget());
+        dto.setRemainingAmount(dto.getRemainingAmount());
+        dto.setSpentAmount(dept.getSpentAmount());
+        dto.setStatus(dept.getStatus());
+        return dto;
+    }
+
     // CREATE/ADD a department
     public Department addDepartment(DepartmentDTO dto) {
         Department dept = new Department();
@@ -79,16 +90,18 @@ public class DepartmentService {
     }
     // READ: View Full budget per Site for individual department
     public Department remainingCalculator(Long id, DepartmentDTO dto) {
-        Optional<Dashboard> approvedEntries = dashRepo.findByDeptAndStatus(id, "Approved");
+        List<Dashboard> approvedEntries = dashRepo.findByDepartment_IdAndStatus(id, "Approved");
         BigDecimal spent = approvedEntries
                 .stream()
                 .map(Dashboard::getCost)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal remaining = dto.getTotalBudget().subtract(spent);
+
         return deptRepo.findById(id).map(
                 deptExists -> {
-                    deptExists.setRemainingAmount(remaining);
+                    BigDecimal total = deptExists.getTotalBudget();
+                    BigDecimal remaining = total.subtract(spent);
                     deptExists.setSpentAmount(spent);
+                    deptExists.setRemainingAmount(remaining);
                     return deptRepo.save(deptExists);
                 }
         ).orElseThrow(() -> new IllegalArgumentException("Cannot calculate remaining amount!"));

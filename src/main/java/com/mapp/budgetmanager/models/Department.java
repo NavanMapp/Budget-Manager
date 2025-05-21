@@ -18,7 +18,9 @@ public class Department {
     private String name;
     private String status;
     private BigDecimal totalBudget;
+    @Column(name = "spent_amount")
     private BigDecimal spentAmount;
+    @Column(name = "remaining_amount")
     private BigDecimal remainingAmount;
     private Date date;
 
